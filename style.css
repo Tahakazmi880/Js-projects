@@ -1,5 +1,5 @@
 :root{
-    --success-color : green;
+    --success-color : rgb(81, 206, 50);
     --error-color : red;
 }
 /* Base Reset & Typography */

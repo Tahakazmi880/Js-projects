@@ -25,8 +25,28 @@ e.preventDefault();
 
 if(username.value == ''){
 // console.log("username empty");
-ErrorMsg(username,"Kindly fill the field");
+ErrorMsg(username,"Username is required");
 }else{
     ShowSuccess(username);
 }
+if(Email.value == ''){
+    // console.log("Email empty");
+    ErrorMsg(Email,"Email is required");
+    }else{
+        ShowSuccess(Email);
+    }
+    if(password1.value == ''){
+        // console.log("password1 empty");
+        ErrorMsg(password1,"password is required");
+        }else{
+            ShowSuccess(password1);
+        }
+        if(password2.value == ''){
+            // console.log("password2 empty");
+            ErrorMsg(password2,"password is required");
+            }else{
+                ShowSuccess(password2);
+            }
+
+
  })
