@@ -19,6 +19,12 @@ function ShowSuccess(input){
 
 formControl.className = "form-control success";
 }
+function IsValidEmail(input) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(input.value.trim());
+}
+
+
 
  form.addEventListener('submit',function(e){
 e.preventDefault();
@@ -32,7 +38,10 @@ ErrorMsg(username,"Username is required");
 if(Email.value == ''){
     // console.log("Email empty");
     ErrorMsg(Email,"Email is required");
-    }else{
+    }else if(!IsValidEmail(Email)){
+        ErrorMsg(Email,"Email is not valid");
+    }
+    else{
         ShowSuccess(Email);
     }
     if(password1.value == ''){
