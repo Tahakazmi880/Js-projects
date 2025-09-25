@@ -1,61 +1,95 @@
 const form = document.getElementById('form');
 const username = document.getElementById('username');
-
-const Email = document.getElementById('Email');
-
+const email = document.getElementById('email');
 const password1 = document.getElementById('password1');
-
 const password2 = document.getElementById('password2');
 
- 
-function ErrorMsg(input,message){
-   const formControl = input.parentElement;
-   formControl.className = 'form-control error';
-const small = formControl.querySelector('small');
-small.innerText = message;
-}
-function ShowSuccess(input){
-    const formControl = input.parentElement;
-
-formControl.className = "form-control success";
-}
-function IsValidEmail(input) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(input.value.trim());
+// Show error message
+function showError(input, message) {
+  const formControl = input.parentElement;
+  formControl.className = 'form-control error';
+  formControl.querySelector('small').textContent = message;
 }
 
-
-
- form.addEventListener('submit',function(e){
-e.preventDefault();
-
-if(username.value == ''){
-// console.log("username empty");
-ErrorMsg(username,"Username is required");
-}else{
-    ShowSuccess(username);
+// Show success outline
+function showSuccess(input) {
+  const formControl = input.parentElement;
+  formControl.className = 'form-control success';
 }
-if(Email.value == ''){
-    // console.log("Email empty");
-    ErrorMsg(Email,"Email is required");
-    }else if(!IsValidEmail(Email)){
-        ErrorMsg(Email,"Email is not valid");
-    }
-    else{
-        ShowSuccess(Email);
-    }
-    if(password1.value == ''){
-        // console.log("password1 empty");
-        ErrorMsg(password1,"password is required");
-        }else{
-            ShowSuccess(password1);
-        }
-        if(password2.value == ''){
-            // console.log("password2 empty");
-            ErrorMsg(password2,"password is required");
-            }else{
-                ShowSuccess(password2);
-            }
 
+// Check if email is valid
+function isValidEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email.trim());
+}
 
- })
+// Validate each field
+function validateFields() {
+  let isValid = true;
+
+  // Username
+  if (username.value.trim() === '') {
+    showError(username, 'Please enter your username');
+    isValid = false;
+  } else if (username.value.length < 3) {
+    showError(username, 'Username must be at least 3 characters');
+    isValid = false;
+  } else if (username.value.length > 15) {
+    showError(username, 'Username must be less than 15 characters');
+    isValid = false;
+  } else {
+    showSuccess(username);
+  }
+
+  // Email
+  if (email.value.trim() === '') {
+    showError(email, 'Please enter your email');
+    isValid = false;
+  } else if (!isValidEmail(email.value)) {
+    showError(email, 'Please enter a valid email address');
+    isValid = false;
+  } else {
+    showSuccess(email);
+  }
+
+  // Password
+  if (password1.value.trim() === '') {
+    showError(password1, 'Please enter a password');
+    isValid = false;
+  } else if (password1.value.length < 6) {
+    showError(password1, 'Password must be at least 6 characters');
+    isValid = false;
+  } else {
+    showSuccess(password1);
+  }
+
+  // Confirm Password
+  if (password2.value.trim() === '') {
+    showError(password2, 'Please confirm your password');
+    isValid = false;
+  } else if (password1.value !== password2.value) {
+    showError(password2, 'Passwords do not match');
+    isValid = false;
+  } else {
+    showSuccess(password2);
+  }
+
+  return isValid;
+}
+
+// On form submit
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const isFormValid = validateFields();
+
+  if (isFormValid) {
+    alert('Registration successful!');
+    form.reset();
+
+    // Remove success styles
+    document.querySelectorAll('.form-control').forEach(ctrl => {
+      ctrl.className = 'form-control';
+    });
+  }
+});
