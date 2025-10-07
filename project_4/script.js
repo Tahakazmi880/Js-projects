@@ -3,18 +3,44 @@ const amountOne = document.getElementById('amount-one');
 const currencyTwo = document.getElementById('currency-two');
 const amountTwo = document.getElementById('amount-two');
 const swapBtn = document.getElementById('swap-btn');
-const rateEl = document.getElementById('rate');
+const rate = document.getElementById('rate');
 
 
 
 function calculate(){
- 
+const currencyOnecode = currencyOne.value;
+const currencyTwocode = currencyTwo.value;
+
+fetch(`https://v6.exchangerate-api.com/v6/14098dca93f217f8ec688236/pair/${currencyOnecode}/${currencyTwocode}`)
+.then(res => res.json())
+.then(data => {
+
+    const conversionRate = data.conversion_rate;
+
+    rate.innerText = `1 ${currencyOnecode} = ${conversionRate} ${currencyTwocode}`;
+
+    amountTwo.value = (amountOne.value * conversionRate).toFixed(2);
+}
+);
 };
+
 
 
 calculate();
 
+currencyOne.addEventListener('change',calculate);
+amountOne.addEventListener('change',calculate);
+currencyTwo.addEventListener('change',calculate);
+amountTwo.addEventListener('change',calculate);
 
+swapBtn.addEventListener('click',() => {
+
+    const temp = currencyOne.value;
+
+    currencyOne.value = currencyTwo.value;
+
+    currencyTwo.value = temp;
+})
 
 
 
